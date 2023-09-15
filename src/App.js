@@ -8,9 +8,8 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-
             <Route path='/' element={<Entry/>} />
-            <Route path='/Editor/' element={<Editor/>}  />
+            <Route path='/Editor/:roomID' element={<Editor/>}  />
         </Routes>
       </BrowserRouter>
 
