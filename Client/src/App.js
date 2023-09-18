@@ -1,9 +1,9 @@
 import './App.css';
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Entry from "./components/Entry";
-import Editor from './components/Editor';
 import Collaborate from './components/Collaborate';
 import './components/Collaborate.css';
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -12,12 +12,16 @@ function App() {
   
   return (
     <>
-      
+      <div>
+        <Toaster position='top-left'
+       >
+        </Toaster>
+      </div>
       <BrowserRouter>
         <Routes>
             <Route path='/' element={<Entry/>} />
-            <Route path='/Editor/:roomID' element={<Editor/>}  />
-            <Route path='/Collaborate' element={<Collaborate/>} />
+            <Route path='/Collaborate/:roomID' element={<Collaborate/>}  />
+
         </Routes>
       </BrowserRouter>
 
