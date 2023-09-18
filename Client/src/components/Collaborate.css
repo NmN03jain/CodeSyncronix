@@ -6,7 +6,7 @@
     border: 1px solid #ccc;
     background-color: #f5f5f5;
     margin-top: 60px;
-}
+} 
 
 
 .code-box {
@@ -19,4 +19,7 @@
     overflow: auto;
     outline: none;
     padding: 10px;
+    
 }
+
+
