@@ -1,60 +1,40 @@
-// import React from 'react'
-// import { v4 } from "uuid";
-
-// import toast from "react-hot-toast";
-// import { useNavigate } from 'react-router-dom';
-// import io from "socket.io-client";
-// import { useEffect, useState } from "react";
 import React, { useState } from 'react';
 import { v4 } from "uuid";
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
-import io from "socket.io-client";
-// const socket = io.connect("http://localhost:5000");
 
 
 const Entry = () => {
+
   const navigate = useNavigate();
   const [roomId, setRoomId] = useState('');
-  const [userName, setUserNames] = useState([]);
-  const [currentUsername, setCurrentUsername] = useState("");
+  const [userName, setUserName] = useState([]);
 
-  const handleAddUsername = () => {
-    setUserNames([...userName, currentUsername]);
-    setCurrentUsername("");
-  };
 
-  const CreateRoom = (e) => {
-    e.preventDefault();
+  const CreateRoom = (event) => {
+    event.preventDefault();
     const id = v4();
     setRoomId(id);
-    toast.success("New Room Created ");
+    toast.success("New Room Created");
   };
 
   const JoinRoom = () => {
+
     if (!roomId || !userName) {
       toast.error("UserName and Room Id is required !");
-    } else {
-      
-
-      // socket.on("connect", () => {
-      //   socket.emit("join-room", roomId);
-      // });
-
+    }
+    else {
       navigate(`/Collaborate/${roomId}`, {
         state: {
           roomId,
           userName,
-         
         },
       });
-
-      handleAddUsername();
     }
   };
 
-  const ForEnter = (e) => {
-    if (e.code === "Enter") {
+  const ForEnter = (event) => {
+    if (event.code === "Enter") {
       JoinRoom();
     }
   };
@@ -70,22 +50,22 @@ const Entry = () => {
               type='text'
               placeholder='USER-NAME'
               value={userName}
-              onChange={(e) => { setUserNames(e.target.value) }}
+              onChange={(event) => { setUserName(event.target.value) }}
               onKeyUp={ForEnter}
             />
             <input
               className='inputfield'
               type='text'
               placeholder='ROOM-ID'
-              onChange={(e) => { setRoomId(e.target.value) }}
+              onChange={(event) => { setRoomId(event.target.value) }}
               value={roomId}
               onKeyUp={ForEnter}
             />
             <button onClick={JoinRoom} className='but'> Join Room </button>
-            <p className='hel'>IF You Want to create Room &nbsp; <a onClick={CreateRoom} href="_">Create Room ID</a> </p>
+            <p className='hel'>Want to create new Room-ID ? &nbsp; <a onClick={CreateRoom} href="_">Create ID</a> </p>
           </div>
         </div>
-        
+
       </div>
     </>
   );

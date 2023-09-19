@@ -1,14 +1,9 @@
 import React from "react";
-import Data from "./Data";
 import './Collaborate.css';
 import { useLocation } from "react-router-dom";
-import Member from "./Member"
-import Compiler from "./Compiler";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
-const socket = io.connect("http://localhost:5000");
-
-
+import Editor from '@monaco-editor/react';
 
 // const Collaborate = () => {
 //     const location = useLocation();
@@ -64,8 +59,10 @@ const socket = io.connect("http://localhost:5000");
 // };
 
 // export default Collaborate;
+
 const Collaborate = () => {
     const location = useLocation();
+    const user = location.state.userName;
     const roomId = location.state.roomId;
     const [socket, setSocket] = useState(null);
     const [textAreaValue, setTextAreaValue] = useState(""); // State for the textarea value
@@ -104,13 +101,24 @@ const Collaborate = () => {
 
     return (
         <>
-            <div>
-                <textarea
-                    rows={20}
-                    cols={50}
-                    value={textAreaValue} // Bind the value to the state
-                    onChange={handleTextAreaChange} // Handle textarea changes
-                ></textarea>
+            <div className="main-container">
+                <div className="side-panel">
+                    <div className="Code-Syncronix">
+                        <h2>Code-Syncronix</h2>
+                    </div>
+                    <ul>
+                        <li>{user}</li>
+                    </ul>
+                </div>
+                <div className="editor">
+                    {/* <textarea
+                        rows={20}
+                        cols={50}
+                        value={textAreaValue} // Bind the value to the state
+                        onChange={handleTextAreaChange} // Handle textarea changes
+                    ></textarea> */}
+                    <Editor height="90vh" defaultLanguage="python      " defaultValue="// some comment" />
+                </div>
             </div>
         </>
     );

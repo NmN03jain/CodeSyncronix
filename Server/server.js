@@ -13,7 +13,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log("A user connected");
+    console.log("A user connected", socket.id);
 
     socket.on("join-room", (roomId) => {
         socket.join(roomId);
@@ -30,9 +30,9 @@ io.on("connection", (socket) => {
     socket.on("text-area-update", (data) => {
         // Broadcast the updated text to all clients in the same room
         io.to(data.roomId).emit("receive-text-area-update", {
-          newText: data.newText,
+            newText: data.newText,
         });
-      });
+    });
 
     socket.on("disconnect", () => {
         console.log("A user disconnected");
