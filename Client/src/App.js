@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Entry from "./components/Entry";
 import Collaborate from './components/Collaborate';
-import './components/Collaborate.css';
+// import './components/Collaborate.css';
 import { Toaster } from 'react-hot-toast';
 
 
