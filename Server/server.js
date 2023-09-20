@@ -12,7 +12,7 @@ const io = new Server(server, {
     },
 });
 
-// io.on listen for the event
+// io.on listen for the event   
 io.on('connection', (socket) => {
     console.log("User is connected");
 
@@ -20,7 +20,13 @@ io.on('connection', (socket) => {
     socket.on("send-message", (data) => {
         // console.log(data);
         socket.broadcast.emit("receive-message", data);
-    })
+    });
+    socket.on("text-area-update", (data) => {
+        // Broadcast the updated text to all clients in the same room
+        io.to(data.roomId).emit("receive-text-area-update", {
+            newText: data.newText,
+        });
+    });
 })
 
 
