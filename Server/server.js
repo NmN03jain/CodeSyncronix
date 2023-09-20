@@ -21,9 +21,14 @@ io.on('connection', (socket) => {
         // console.log(data);
         socket.broadcast.emit("receive-message", data);
     });
+<<<<<<< Updated upstream
     socket.on("text-area-update", (data) => {
+=======
+
+    socket.on("editor-content-update", (data) => {
+>>>>>>> Stashed changes
         // Broadcast the updated text to all clients in the same room
-        io.to(data.roomId).emit("receive-text-area-update", {
+        io.to(data.roomId).emit("receive-editor-content", {
             newText: data.newText,
         });
     });
