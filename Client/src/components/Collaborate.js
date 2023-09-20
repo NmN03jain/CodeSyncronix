@@ -117,7 +117,7 @@ const Collaborate = () => {
                         value={textAreaValue} // Bind the value to the state
                         onChange={handleTextAreaChange} // Handle textarea changes
                     ></textarea> */}
-                    <Editor height="90vh" defaultLanguage="python      " defaultValue="// some comment" />
+                    <Editor height="90vh" defaultLanguage="javascript" defaultValue="// some comment" />
                 </div>
             </div>
         </>
