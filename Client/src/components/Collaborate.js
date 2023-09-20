@@ -1,28 +1,80 @@
 import React from "react";
 import Member from "./Member"
-import Compiler from "./Compiler";
-import io from "socket.io-client";
-import { useEffect, useState } from "react";
-const socket = io.connect("http://localhost:5000");
+import Editor from "./Editor";
+import { useLocation, Navigate ,useNavigate } from "react-router-dom";
+import { useState ,useRef,useEffect } from "react";
+import { socketIo } from "./socket";
+import toast from 'react-hot-toast'
+import { GrCopy } from "react-icons/gr";
 
-const Collaborate = () => {
-    const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState("");
-    const sendMessage = () => {
-        socket.emit("send-message", { message });
+
+
+
+
+const Collaborate = (props) => {
+
+    const [members ,setMembers] = useState([])
+    const location = useLocation();
+    const navigate = useNavigate();
+    const socketreff = useRef(null);
+    const codeReff = useRef(null);
+
+
+    useEffect(()=>{
+        const doit = async ()=>{
+
+            socketreff.current = await socketIo();
+            socketreff.current.on('connect_error', (err) => handleErrors(err));
+            socketreff.current.on('connect_failed', (err) => handleErrors(err));
+
+            function handleErrors(e) {
+                console.log('socket error', e);
+                toast.error('Socket connection failed, try again later.');
+                navigate('/');
+            }
+            socketreff.current.emit('join',{
+                username : location.state?.userName,
+                roomId : location.state?.roomId
+            })
+
+            socketreff.current.on('joined', ({users,username,socketId})=>{
+                    if(username!== location.state?.userName){
+                            toast.success(`${username} has joined `)
+                    }
+                    setMembers(users)
+
+                    
+            })
+
+            socketreff.current.on('disconnected',({socketId,username})=>{
+                toast.success(`${username} has left the room`)
+                setMembers((prev)=>{
+                        return prev.filter((member)=> member.socketId!==socketId)
+                })
+            })
+
+        }
+        doit();
+
+        return ()=>{
+            socketreff.current.disconnect();
+            socketreff.current.off('joined');
+            socketreff.current.off('disconnected')
+        }
+
+    },[])
+    if(!location.state){
+        return <Navigate to = "/" />
     }
     
-    useEffect(() => {
-        socket.on("receive-message", (data) => {
-            setMessageReceived(data.message);
-        });
-    }, []);
-
-
-    const [members ,setMembers] = useState([
-        {id:1,username:"Pradyumn"},
-        {id:2,username:"Naman "},
-    ])
+    const copyId = ()=>{
+        navigator.clipboard.writeText(location.state.roomId)
+        toast.success("Room ID copied ")
+    }
+    const LeaveRoom = ()=>{
+        navigate('/');
+    }
+    
 
     return (
         <>
@@ -31,41 +83,36 @@ const Collaborate = () => {
 
                     <div className="LeftSideInner">
                         <div className="Logo">
+                        <a className="copy" onClick={copyId}> <GrCopy/></a>
                         <h2 className='heading'>Code-Syncronix</h2>
                         </div>
 
-                        <h4 >CONNECTED MEMBERS</h4>
+                        <h4 > ⬇️ BETTER - TOGETHER ⬇️ </h4>
                         <div className="Members">
                             {
                                 members.map((member)=>(  
-                                    <Member  key={member.id} username ={member.username}/>
+                                    <Member  key={member.socketId} username ={member.username}/>
                                 ))
                             }
                         </div>
 
                     </div>
-                        <button className="bt copy">Copy Room Id</button>
-                        <button className="bt leave">Leave Room</button>
+                    {/* <button className="bt copy">Copy Room Id</button> */}
+                <button className="bt leave" onClick={LeaveRoom}>Leave Room</button>
                      </div>
 
                 <div className="rightSide"> 
 
-                <Compiler/>
-                
+            
+                <Editor
+                socketref={socketreff}
+                roomId={location.state?.roomId}
+                onCodeC = {(myCode)=>{codeReff.current = myCode}}
+                />
                 </div>
-
             </div>
 
-            {/* <div className="code-editor">
-                <input placeholder="Message..." onChange={(event) => {
-                    setMessage(event.target.value);
-                }}/>
-                <button onClick={sendMessage}>Send</button>
-                <pre contenteditable="true" class="code-box" >
-                    {messageReceived}
-                </pre>
-
-            </div> */}
+           
         </>
     )
 }
