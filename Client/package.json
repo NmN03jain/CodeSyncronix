@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.9",
+    "@mui/material": "^5.14.10",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "codemirror": "^6.0.1",
+    "@uiw/codemirror-theme-vscode": "^4.21.13",
+    "babel-plugin-macros": "^3.1.0",
+    "codemirror": "^5.65.11",
+    "concurrently": "^8.2.1",
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.11.0",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.7.2",
@@ -24,7 +29,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "both": "concurrently \"npm run start\"  \"nodemon ../Server/server.js\" "
   },
   "eslintConfig": {
     "extends": [

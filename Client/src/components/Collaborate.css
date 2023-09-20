@@ -1,33 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@1,500&family=Maven+Pro:wght@500&family=Phudu:wght@500&family=Poppins&family=Rubik:ital,wght@1,500&display=swap');
-
-.code-editor {
-    
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #ffffff;
-    margin-top: 60px;
+body{
+    margin: 0px;
+    /* padding: 0px; */
+    margin-left: 10px;
 }
-
-
-.code-box {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ddd;
-    background-color: white;
-    font-family: monospace;
-    white-space: pre-wrap;
-    overflow: auto;
-    outline: none;
-    padding: 10px;
-}
-
-
-
 h4{
-    color: rgb(144, 120, 120);
-    font-family: 'Rubik', sans-serif; 
+    color: rgb(245, 245, 245);
+    font-family:"Poppins";
+    /* font-weight: bold; */
+    margin-left: 10px;
 }
 p{
     color: rgb(94, 168, 91);
@@ -40,20 +21,27 @@ p{
     padding: 5px;
     cursor: pointer;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     /* border: 3px solid rgb(49, 50, 53); */
     font-weight: bold;
     width: 60%;
     background-color: darkgray;
+    /* position: relative; */
+    /* left: 75%; */
+
 }
 .Main{
     display: grid;
     grid-template-columns: 230px 1fr;
-    height: 100vh;
+    height: 100vh;   
+    margin: 0px;
+    padding: 0px;
+   
 }
 .LeftSide{
     display: flex;
     flex-direction: column;
+    /* background-color: #ddd; */
 }
 .LeftSideInner{
     flex: 1;
@@ -79,12 +67,25 @@ span{
     word-break:break-all;
 }
 .leave{
-    background-color: rgb(177, 45, 45);
+    background-color: rgb(184, 236, 234);
     font-size: 15;
+    margin: auto;
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom:5px;
 }
 .copy{
-    background-color: bisque;
+    cursor: pointer;
+    border-bottom: none;
+    margin-left: 80%;
+    font-size: 30px;
+    /* color: red; */
+    /* background-color: aqua; */
 }
 
+.CodeMirror{
+    /* min-height: calc(100vh - 20px); */
+    min-height: 100vh;
+    font-size: 20px;
+    /* line-height: 1.6px; */
+    /* padding-top: 20px;/ */
+}

@@ -8,6 +8,7 @@ const Entry = () => {
   const navigate = useNavigate();
   const [roomId , setRoomId] = useState('');
   const [userName , setUserName] = useState('');
+  
   const CreateRoom = (e)=>{
     e.preventDefault();
     const id = v4();
@@ -22,7 +23,7 @@ const Entry = () => {
     else{
     navigate(`/Collaborate/${roomId}`,{
       state:{
-        userName, 
+        userName, roomId,
       },
     })
   }
