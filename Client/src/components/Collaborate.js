@@ -4,68 +4,17 @@ import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import Editor from '@monaco-editor/react';
-
-// const Collaborate = () => {
-//     const location = useLocation();
-//     const roomId = location.state.roomId;
-//     const [socket, setSocket] = useState(null);
-
-//     const [message, setMessage] = useState("");
-//     const [messageReceived, setMessageReceived] = useState("");
-
-//     const sendMessage = () => {
-//         socket.emit("send-message", { message, roomId });
-//     };
-
-//     useEffect(() => {
-//         const newSocket = io.connect("http://localhost:5000", {
-//             query: { roomId },
-//         });
-
-//         newSocket.on("connect", () => {
-//             newSocket.emit("join-room", roomId);
-//         });
-
-//         setSocket(newSocket);
-
-//         newSocket.on("receive-message", (data) => {
-//             setMessageReceived(data.message);
-//         });
-
-//         return () => {
-//             if (socket) {
-//                 socket.disconnect();
-//             }
-//         };
-//     }, [roomId]);
-
-//     return (
-//         <>
-
-//             <div className="code-editor">
-//                 <input placeholder="Message..." onChange={(event) => {
-//                     setMessage(event.target.value);
-//                 }} />
-//                 <button onClick={sendMessage}>Send</button>
-//                 <h1>{messageReceived}</h1>
-//             </div>
-
-
-//             <div>
-//                 <textarea rows={20} cols={50}></textarea>
-//             </div>
-//         </>
-//     );
-// };
-
-// export default Collaborate;
+import { useRef } from "react";
 
 const Collaborate = () => {
     const location = useLocation();
     const user = location.state.userName;
     const roomId = location.state.roomId;
     const [socket, setSocket] = useState(null);
-    const [textAreaValue, setTextAreaValue] = useState(""); // State for the textarea value
+    const [editorContent, setEditorContent] = useState("// some comment"); // State to store editor content
+
+    // Create a ref to the Monaco Editor instance
+    const editorRef = useRef(null);
 
     useEffect(() => {
         const newSocket = io.connect("http://localhost:5000", {
@@ -78,10 +27,14 @@ const Collaborate = () => {
 
         setSocket(newSocket);
 
-        // Listen for changes in textarea content from other clients
-        newSocket.on("receive-text-area-update", (data) => {
-            setTextAreaValue(data.newText);
-        });
+        // Function to handle incoming editor content updates
+        const handleEditorContentUpdate = (data) => {
+            // Update the editor content state
+            setEditorContent(data.newText);
+        };
+
+        // Listen for changes in the editor content from other clients
+        newSocket.on("receive-editor-content", handleEditorContentUpdate);
 
         return () => {
             if (socket) {
@@ -90,13 +43,13 @@ const Collaborate = () => {
         };
     }, [roomId]);
 
-    // Handle changes in the textarea
-    const handleTextAreaChange = (event) => {
-        const newText = event.target.value;
-        setTextAreaValue(newText);
+    // Function to handle changes in the Monaco Editor
+    const handleEditorChange = (value, event) => {
+        // Update the editor content state
+        setEditorContent(value);
 
-        // Emit a socket event to update the textarea content for other clients
-        socket.emit("text-area-update", { newText, roomId });
+        // Emit a socket event to update the editor content for other clients
+        socket.emit("editor-content-update", { newText: value, roomId });
     };
 
     return (
@@ -111,13 +64,17 @@ const Collaborate = () => {
                     </ul>
                 </div>
                 <div className="editor">
-                    {/* <textarea
-                        rows={20}
-                        cols={50}
-                        value={textAreaValue} // Bind the value to the state
-                        onChange={handleTextAreaChange} // Handle textarea changes
-                    ></textarea> */}
-                    <Editor height="90vh" defaultLanguage="javascript" defaultValue="// some comment" />
+                    <Editor
+                        height="90vh"
+                        defaultLanguage="javascript"
+                        value={editorContent} // Set the editor content from state
+                        onChange={handleEditorChange} // Handle editor changes
+                        // Pass in the editor reference to get the editor instance
+                        onMount={(editor, monaco) => {
+                            // Save a reference to the editor instance
+                            editorRef.current = editor;
+                        }}
+                    />
                 </div>
             </div>
         </>
