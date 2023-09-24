@@ -17,7 +17,8 @@ const Collaborate = (props) => {
     const location = useLocation();
     const navigate = useNavigate();
     const socketreff = useRef(null);
-    const codeReff = useRef(null);
+    const codeRef = useRef(null)
+    
 
 
     useEffect(()=>{
@@ -42,8 +43,12 @@ const Collaborate = (props) => {
                             toast.success(`${username} has joined `)
                     }
                     setMembers(users)
-
-                    
+                    console.log(codeRef.current)
+                    socketreff.current.emit('sync-code',{
+                        myCode : codeRef.current,
+                        socketId,
+                    })
+ 
             })
 
             socketreff.current.on('disconnected',({socketId,username})=>{
@@ -87,7 +92,7 @@ const Collaborate = (props) => {
                         <h2 className='heading'>Code-Syncronix</h2>
                         </div>
 
-                        <h4 > ⬇️ BETTER - TOGETHER ⬇️ </h4>
+                        <h4 > Connected Users </h4>
                         <div className="Members">
                             {
                                 members.map((member)=>(  
@@ -107,8 +112,11 @@ const Collaborate = (props) => {
                 <Editor
                 socketref={socketreff}
                 roomId={location.state?.roomId}
-                onCodeC = {(myCode)=>{codeReff.current = myCode}}
+                onCode = {(myCode)=>{
+                    codeRef.current = myCode
+                }}
                 />
+
                 </div>
             </div>
 

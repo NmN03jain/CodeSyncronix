@@ -9,7 +9,7 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/cobalt.css';
 import 'codemirror/theme/midnight.css';
 
-const Editor = ({socketref,roomId,onCodeC}) => {
+const Editor = ({socketref,roomId,onCode}) => {
 
     const editorRef = useRef(null);
     useEffect(() => {
@@ -29,7 +29,7 @@ const Editor = ({socketref,roomId,onCodeC}) => {
                 console.log(changes)
                 const {origin} = changes;
                 const myCode = instance.getValue();
-                onCodeC(myCode);    
+                onCode(myCode);
                 if(origin!=='setValue'){
                     socketref.current.emit('code-change',{
                         roomId,
