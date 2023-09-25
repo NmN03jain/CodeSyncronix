@@ -52,7 +52,7 @@ const Entry = () => {
           </div>
         </div>
         {/* Company Name © DeepAI 2021 */}
-        <footer>
+        <footer>  
                 <h4 className='y'>
                   Naman &nbsp;&&nbsp; Pradyumn © CodeSyncronix 2023
                 </h4>
@@ -60,7 +60,7 @@ const Entry = () => {
         
       </div>
 
-    </>
+    </> 
   )
 }
 

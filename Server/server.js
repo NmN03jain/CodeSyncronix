@@ -71,8 +71,14 @@ io.on('connection', (socket) => {
 
 })
 
+app.get("/",()=>{
+    compiler.flush(()=>{
+        console.log("deleted");
+    }) 
+}) 
+
 // compiler code 
-app.post( "/Collaborate", (req, res) => { 
+app.post("/Collaborate", (req, res) => {
     var code = req.body.code
     var input = req.body.input
     var lang = req.body.lang
@@ -82,79 +88,79 @@ app.post( "/Collaborate", (req, res) => {
         // res.send("hello bhai")
         if (lang == "Cpp") {
             if (!input) {
-                var envData = { OS: "windows", cmd: "g++",options:{timeout:10000} };
+                var envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } };
                 compiler.compileCPP(envData, code, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"Syntax Error"})
+                    else {
+                        res.send({ output: "Syntax Error" })
                     }
                 });
             }
             else {
-                var envData = { OS: "windows", cmd: "g++",options:{timeout:10000} };
+                var envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } };
                 compiler.compileCPPWithInput(envData, code, input, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"give input"})
+                    else {
+                        res.send({ output: "give input" })
                     }
                 });
-            } 
+            }
 
         }
         else if (lang == "Java") {
             if (!input) {
                 var envData = { OS: "windows" };
                 compiler.compileJava(envData, code, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"Syntax Error"})
+                    else {
+                        res.send({ output: "Syntax Error" })
                     }
                 });
             }
             else {
                 var envData = { OS: "windows" };
                 compiler.compileJavaWithInput(envData, code, input, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"give input"})
+                    else {
+                        res.send({ output: "give input" })
                     }
                 });
             }
         }
-        else if(lang=="Python") {
+        else if (lang == "Python") {
             if (!input) {
-                var envData = { OS: "windows" };
+                var envData = { OS: "windows" , options: { timeout: 10000 } };
                 compiler.compilePython(envData, code, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"Segmentation error"})
+                    else {
+                        res.send({ output: "Segmentation error" })
                     }
                 });
             }
             else {
-                var envData = { OS: "windows" };
+                var envData = { OS: "windows" , options: { timeout: 10000 } };
                 compiler.compilePythonWithInput(envData, code, input, function (data) {
-                    if(data.output){
+                    if (data.output) {
                         res.send(data);
                     }
-                    else{
-                        res.send({output:"give input"})
+                    else {
+                        res.send({ output: "give input" })
                     }
                 });
             }
         }
     } catch (error) {
-        console.log(error)
+        console.log("shiit happend")
     }
 
 })
