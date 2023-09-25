@@ -32,7 +32,8 @@ body{
 }
 .heading{
   font-weight: bold;
-  padding-bottom: 50px;
+  padding-bottom: 40px;
+  padding-top: 10px;
   padding-left: 0px;
   text-shadow: 0px 0px 5px rgba(255, 255, 255, 1), 
                0px 0px 10px rgba(255, 255, 255, 1), 
