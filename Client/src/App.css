@@ -32,7 +32,8 @@ body{
 }
 .heading{
   font-weight: bold;
-  padding-bottom: 50px;
+  padding-bottom: 40px;
+  padding-top: 10px;
   padding-left: 0px;
   text-shadow: 0px 0px 5px rgba(255, 255, 255, 1), 
                0px 0px 10px rgba(255, 255, 255, 1), 
@@ -99,7 +100,38 @@ a{
   margin: 0 20px ;
   margin-top: 30px;
   margin-bottom: 0px;
-  
 }
 
+footer {
+  position: fixed;
+  bottom: 10px;
+ 
+}
+.y{
+  /* font-weight: bold;
+    color: black; */
+    /* text-shadow: 1px 1px #989898, 5px 5px #6c6666; */
+    color: #fff;
+		/* font-size: 92px; */
+		text-transform: uppercase;
+		font-weight: 700;
+		font-family: "Josefin Sans", sans-serif;
+		background: linear-gradient(to right,#eceeef 10%, #617680 50%, #76b781 60%);
+		background-size: auto auto;
+		background-clip: border-box;
+		background-size: 200% auto;
+		color: #fff;
+		background-clip: text;
+		text-fill-color: transparent;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		animation: textclip 1.5s linear infinite;
+		display: inline-block;
+  
+}
+@keyframes textclip {
+	to {
+		background-position: 200% center;
+	}
+}
 

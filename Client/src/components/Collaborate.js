@@ -1,253 +1,125 @@
-// import React from "react";
-// import './Collaborate.css';
-// import { useLocation } from "react-router-dom";
-// import io from "socket.io-client";
-// import { useEffect, useState } from "react";
-// import Editor from '@monaco-editor/react';
-// import { useRef } from "react";
-// import Axios from 'axios';
-// // import spinner from './spinner.svg';
-
-// const Collaborate = () => {
-//     const location = useLocation();
-//     const user = location.state.userName;
-//     const roomId = location.state.roomId;
-//     const [socket, setSocket] = useState(null);
-//     const [editorContent, setEditorContent] = useState("// some comment"); // State to store editor content
-    
-//     const [userInput, setUserInput] = useState("");
-//     const [userOutput, setUserOutput] = useState("");
-//     const [loading, setLoading] = useState(false);
-//     // Create a ref to the Monaco Editor instance
-//     const editorRef = useRef(null);
-
-//     useEffect(() => {
-//         const newSocket = io.connect("http://localhost:5000", {
-//             query: { roomId },
-//         });
-
-//         newSocket.on("connect", () => {
-//             newSocket.emit("join-room", roomId);
-//         });
-
-//         setSocket(newSocket);
-
-//         // Function to handle incoming editor content updates
-//         const handleEditorContentUpdate = (data) => {
-//             // Update the editor content state
-//             setEditorContent(data.newText);
-//         };
-
-//         // Listen for changes in the editor content from other clients
-//         newSocket.on("receive-editor-content", handleEditorContentUpdate);
-
-//         return () => {
-//             if (socket) {
-//                 socket.disconnect();
-//             }
-//         };
-//     }, [roomId, socket]);
-
-//     // Function to handle changes in the Monaco Editor
-//     const handleEditorChange = (value, event) => {
-//         // Update the editor content state
-//         setEditorContent(value);
-
-//         // Emit a socket event to update the editor content for other clients
-//         socket.emit("editor-content-update", { newText: value, roomId });
-//     };
-
-//     function compile() {
-//         setLoading(true);
-//         if (editorContent === ``) {
-//             return
-//         }
-
-//         // Post request to compile endpoint
-//         Axios.post(`http://localhost:6000/compile`, {
-//             code: editorContent,
-//             language: "javascript",
-//             input: userInput
-//         }).then((res) => {
-//             setUserOutput(res.data.output);
-//         }).then(() => {
-//             setLoading(false);
-//         })
-//     }
-
-//     function clearOutput() {
-//         setUserOutput("");
-//     }
-
-//     return (
-//         <>
-//             <div className="main-container">
-//                 <div className="side-panel">
-//                     <div className="Code-Syncronix">
-//                         <h2>Code-Syncronix</h2>
-//                     </div>
-//                     <ul>
-//                         <li>{user}</li>
-//                     </ul>
-//                 </div>
-//                 <div className="editor">
-//                     <Editor 
-//                         width="700px"
-//                         height="90vh"
-//                         defaultLanguage="javascript"
-//                         value={editorContent} // Set the editor content from state
-//                         onChange={handleEditorChange} // Handle editor changes
-//                         // Pass in the editor reference to get the editor instance
-//                         onMount={(editor, monaco) => {
-//                             // Save a reference to the editor instance
-//                             editorRef.current = editor;
-//                         }}
-//                     />
-//                     <button className="run-btn" onClick={() => compile()}>
-//                         Run
-//                     </button>
-//                 </div>
-//                 <div className="right-container">
-//                     <h4>Input:</h4>
-//                     <div className="input-box">
-//                         <textarea id="code-inp" onChange=
-//                             {(e) => setUserInput(e.target.value)}>
-//                         </textarea>
-//                     </div>
-//                     <h4>Output:</h4>
-//                     {loading ? (
-//                         <div className="spinner-box">
-//                             <h1>Loading</h1>
-//                         </div>
-                        
-//                     ) : (
-//                         <div className="output-box">
-//                             <pre>{userOutput}</pre>
-//                             <button onClick={() => { clearOutput() }}
-//                                 className="clear-btn">
-//                                 Clear
-//                             </button>
-//                         </div>
-//                     )}
-//                 </div>
-//             </div>
-        
-//         </>
-//     );
-// };
-
-// export default Collaborate;
+import React from "react";
+import Member from "./Member"
+import Editor from "./Editor";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { socketIo } from "./socket";
+import toast from 'react-hot-toast'
+import { GrCopy } from "react-icons/gr";
 
 
-import { useState } from 'react';
-import './app.css';
-import Editor from "@monaco-editor/react";
-// import Navbar from './Components/Navbar';
-import Navbar from './navbar';
-import Axios from 'axios';
-// import spinner from './spinner.svg';
 
-function App() {
 
-	// State variable to set users source code
-	const [userCode, setUserCode] = useState(``);
 
-	// State variable to set editors default language
-	const [userLang, setUserLang] = useState("python");
+const Collaborate = (props) => {
 
-	// State variable to set editors default theme
-	const [userTheme, setUserTheme] = useState("vs-dark");
+    const [members, setMembers] = useState([])
+    const location = useLocation();
+    const navigate = useNavigate();
+    const socketreff = useRef(null);
+    const codeRef = useRef(null)
 
-	// State variable to set editors default font size
-	const [fontSize, setFontSize] = useState(20);
 
-	// State variable to set users input
-	const [userInput, setUserInput] = useState("");
 
-	// State variable to set users output
-	const [userOutput, setUserOutput] = useState("");
+    useEffect(() => {
+        const doit = async () => {
 
-	// Loading state variable to show spinner
-	// while fetching data
-	const [loading, setLoading] = useState(false);
+            socketreff.current = await socketIo();
+            socketreff.current.on('connect_error', (err) => handleErrors(err));
+            socketreff.current.on('connect_failed', (err) => handleErrors(err));
 
-	const options = {
-		fontSize: fontSize
-	}
+            function handleErrors(e) {
+                console.log('socket error', e);
+                toast.error('Socket connection failed, try again later.');
+                navigate('/');
+            }
+            socketreff.current.emit('join', {
+                username: location.state?.userName,
+                roomId: location.state?.roomId
+            })
 
-	// Function to call the compile endpoint
-	function compile() {
-		setLoading(true);
-		if (userCode === ``) {
-			return
-		}
+            socketreff.current.on('joined', ({ users, username, socketId }) => {
+                if (username !== location.state?.userName) {
+                    toast.success(`${username} has joined `)
+                }
+                setMembers(users)
+                console.log(codeRef.current)
+                socketreff.current.emit('sync-code', {
+                    myCode: codeRef.current,
+                    socketId,
+                })
 
-		// Post request to compile endpoint
-		Axios.post(`http://localhost:8000/compile`, {
-			code: userCode,
-			language: userLang,
-			input: userInput
-		}).then((res) => {
-			setUserOutput(res.data.output);
-		}).then(() => {
-			setLoading(false);
-		})
-	}
+            })
 
-	// Function to clear the output screen
-	function clearOutput() {
-		setUserOutput("");
-	}
+            socketreff.current.on('disconnected', ({ socketId, username }) => {
+                toast.success(`${username} has left the room`)
+                setMembers((prev) => {
+                    return prev.filter((member) => member.socketId !== socketId)
+                })
+            })
 
-	return (
-		<div className="App">
-			<Navbar
-				userLang={userLang} setUserLang={setUserLang}
-				userTheme={userTheme} setUserTheme={setUserTheme}
-				fontSize={fontSize} setFontSize={setFontSize}
-			/>
-			<div className="main">
-				<div className="left-container">
-					<Editor
-						options={options}
-						height="calc(100vh - 50px)"
-						width="100%"
-						theme={userTheme}
-						language={userLang}
-						defaultLanguage="python"
-						defaultValue="# Enter your code here"
-						onChange={(value) => { setUserCode(value) }}
-					/>
-					<button className="run-btn" onClick={() => compile()}>
-						Run
-					</button>
-				</div>
-				<div className="right-container">
-					<h4>Input:</h4>
-					<div className="input-box">
-						<textarea id="code-inp" onChange=
-							{(e) => setUserInput(e.target.value)}>
-						</textarea>
-					</div>
-					<h4>Output:</h4>
-					{loading ? (
-						<div className="spinner-box">
-                            {/* <img src={spinner} alt="Loading..." /> */}
-                            <p>loading..</p>
+        }
+        doit();
+
+        return () => {
+            socketreff.current.disconnect();
+            socketreff.current.off('joined');
+            socketreff.current.off('disconnected')
+        }
+
+    }, [])
+    if (!location.state) {
+        return <Navigate to="/" />
+    }
+
+    const copyId = () => {
+        navigator.clipboard.writeText(location.state.roomId)
+        toast.success("Room ID copied ")
+    }
+    const LeaveRoom = () => {
+        navigate('/');
+    }
+
+
+    return (
+        <>
+            <div className="Main">
+                <div className="LeftSide">
+
+                    <div className="LeftSideInner">
+                        <div className="Logo">
+                            <a className="copy" onClick={copyId}> <GrCopy /></a>
+                            <h2 className='heading'>Code-Syncronix</h2>
                         </div>
-					) : (
-						<div className="output-box">
-							<pre>{userOutput}</pre>
-							<button onClick={() => { clearOutput() }}
-								className="clear-btn">
-								Clear
-							</button>
-						</div>
-					)}
-				</div>
-			</div>
-		</div>
-	);
-}
 
-export default App;
+                        <h4 > Connected Users </h4>
+                        <div className="Members">
+                            {
+                                members.map((member) => (
+                                    <Member key={member.socketId} username={member.username} />
+                                ))
+                            }
+                        </div>
+
+                    </div>
+
+                    <button className="bt leave" onClick={LeaveRoom}>Leave Room</button>
+                </div>
+
+                <div className="rightSide">
+
+                    <Editor
+                        socketref={socketreff}
+                        roomId={location.state?.roomId}
+                        onCode={(myCode) => {
+                            codeRef.current = myCode
+                        }}
+                    />
+                </div>
+            </div>
+
+
+        </>
+    )
+}
+export default Collaborate;

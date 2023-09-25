@@ -7,12 +7,10 @@ import { useNavigate } from 'react-router-dom';
 const Entry = () => {
 
   const navigate = useNavigate();
-  const [roomId, setRoomId] = useState('');
-  const [userName, setUserName] = useState([]);
-
-
-  const CreateRoom = (event) => {
-    event.preventDefault();
+  const [roomId , setRoomId] = useState('');
+  const [userName , setUserName] = useState('');
+  const CreateRoom = (e)=>{
+    e.preventDefault();
     const id = v4();
     setRoomId(id);
     toast.success("New Room Created");
@@ -23,15 +21,14 @@ const Entry = () => {
     if (!roomId || !userName) {
       toast.error("UserName and Room Id is required !");
     }
-    else {
-      navigate(`/Collaborate/${roomId}`, {
-        state: {
-          roomId,
-          userName,
-        },
-      });
-    }
-  };
+    else{
+    navigate(`/Collaborate/${roomId}`,{
+      state:{
+        userName, 
+      },
+    })
+  }
+  }
 
   const ForEnter = (event) => {
     if (event.code === "Enter") {
@@ -65,7 +62,6 @@ const Entry = () => {
             <p className='hel'>Want to create new Room-ID ? &nbsp; <a onClick={CreateRoom} href="_">Create ID</a> </p>
           </div>
         </div>
-
       </div>
     </>
   );

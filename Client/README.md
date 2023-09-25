@@ -1,3 +1,7 @@
+Pradyum First enter in client folder and then run command " npm run both" :
+it will start both server as well as react js file
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

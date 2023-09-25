@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <div>
-        <Toaster position='top-left'
+        <Toaster position='top-right'
        >
         </Toaster>
       </div>

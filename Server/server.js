@@ -1,129 +1,175 @@
-// const express = require('express');
-// const { Server } = require('socket.io');
-// const http = require('http');
-// const cors = require('cors');
-
-// const app2 = express();
-// const app = express();
-// const server = http.createServer(app);
-// const io = new Server(server, {
-//     cors: {
-//         origin: "http://localhost:3000",
-//         methods: ["GET", "POST"],
-//     },
-// });
-
-// app2.post("/compile", (req, res) => {
-//     //getting the required data from the request
-//     let code = req.body.code;
-//     let language = req.body.language;
-//     let input = req.body.input;
-
-//     if (language === "python") {
-//         language = "py"
-//     }
-
-//     let data = ({
-//         "code": code,
-//         "language": language,
-//         "input": input
-//     });
-//     let config = {
-//         method: 'post',
-//         url: 'https://codexweb.netlify.app/.netlify/functions/enforceCode',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         data: data
-//     };
-//     //calling the code compilation API
-//     Axios(config)
-//         .then((response) => {
-//             res.send(response.data)
-//             console.log(response.data)
-//         }).catch((error) => {
-//             console.log(error);
-//         });
-// })
-
-// io.on("connection", (socket) => {
-//     console.log("A user connected", socket.id);
-
-//     socket.on("join-room", (roomId) => {
-//         socket.join(roomId);
-//         console.log(`User joined room: ${roomId}`);
-//     });
-
-//     socket.on("editor-content-update", (data) => {
-//         // Broadcast the updated text to all clients in the same room
-//         io.to(data.roomId).emit("receive-editor-content", {
-//             newText: data.newText,
-//         });
-//     });
-
-//     socket.on("disconnect", () => {
-//         console.log("A user disconnected");
-//     });
-// });
-
-// app2.listen(6000,() =>{
-//     console.log("App2 Server Started on PORT: 6000");
-// })
-
-// server.listen(5000, () => {
-//     console.log("Server Started on PORT: 5000");
-// });
-
-
-
-
-
-
-
-const express = require("express");
-const cors = require("cors");
-const Axios = require("axios");
+const express = require('express');
 const app = express();
-const PORT = 8000;
- 
-app.use(cors());
-app.use(express.json());
- 
-app.post("/compile", (req, res) => {
-    //getting the required data from the request
-    let code = req.body.code;
-    let language = req.body.language;
-    let input = req.body.input;
- 
-    if (language === "python") {
-        language = "py"
-    }
- 
-    let data = ({
-        "code": code,
-        "language": language,
-        "input": input
+
+
+const bodyP = require("body-parser")
+app.use(bodyP.json())
+const compiler = require("compilex")
+const options = { stats: true }
+compiler.init(options);
+
+
+const http = require('http');
+const server = http.createServer(app);
+
+const { Server } = require('socket.io');
+const cors = require('cors');
+
+const io = new Server(server);
+app.use(cors())
+const listOfUser = {};
+
+function allUsers(roomId) {
+    return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
+        return {
+            socketId,
+            username: listOfUser[socketId]
+        }
     });
-    let config = {
-        method: 'post',
-        url: 'https://codexweb.netlify.app/.netlify/functions/enforceCode',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        data: data
-    };
-    //calling the code compilation API
-    Axios(config)
-        .then((response) => {
-            console.log(response.data);
-            res.send(response.data)
-            console.log(response.data)
-        }).catch((error) => {
-            // console.log(error);
-            console.log("error");
-        });
+}
+
+// io.on listen for the event
+io.on('connection', (socket) => {
+    console.log("User is connected", socket.id);
+
+    socket.on("join", ({ roomId, username }) => {
+        listOfUser[socket.id] = username;
+        socket.join(roomId)
+        const users = allUsers(roomId);
+        console.log(users);
+        users.forEach(({ socketId }) => {
+            io.to(socketId).emit("joined", {
+                users,
+                username,
+                socketId: socket.id,
+            })
+        })
+    })
+
+    socket.on('code-change', ({ roomId, myCode }) => {
+        socket.in(roomId).emit('code-change', {
+            myCode
+        })
+    })
+
+    socket.on('sync-code', ({ socketId, myCode }) => {
+        io.to(socketId).emit('code-change', { myCode })
+    })
+
+    socket.on('disconnecting', () => {
+        const room = [...socket.rooms]
+        room.forEach((roomId) => {
+            socket.in(roomId).emit('disconnected', {
+                socketId: socket.id,
+                username: listOfUser[socket.id]
+            })
+        })
+        delete listOfUser[socket.id]
+        socket.leave();
+
+    })
+
 })
- 
-app.listen(process.env.PORT || PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+
+// compiler code 
+app.post( "/Collaborate", (req, res) => { 
+    var code = req.body.code
+    var input = req.body.input
+    var lang = req.body.lang
+    console.log("hi")
+
+    try {
+        // res.send("hello bhai")
+        if (lang == "Cpp") {
+            if (!input) {
+                var envData = { OS: "windows", cmd: "g++",options:{timeout:10000} };
+                compiler.compileCPP(envData, code, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"Syntax Error"})
+                    }
+                });
+            }
+            else {
+                var envData = { OS: "windows", cmd: "g++",options:{timeout:10000} };
+                compiler.compileCPPWithInput(envData, code, input, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"give input"})
+                    }
+                });
+            } 
+
+        }
+        else if (lang == "Java") {
+            if (!input) {
+                var envData = { OS: "windows" };
+                compiler.compileJava(envData, code, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"Syntax Error"})
+                    }
+                });
+            }
+            else {
+                var envData = { OS: "windows" };
+                compiler.compileJavaWithInput(envData, code, input, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"give input"})
+                    }
+                });
+            }
+        }
+        else if(lang=="Python") {
+            if (!input) {
+                var envData = { OS: "windows" };
+                compiler.compilePython(envData, code, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"Segmentation error"})
+                    }
+                });
+            }
+            else {
+                var envData = { OS: "windows" };
+                compiler.compilePythonWithInput(envData, code, input, function (data) {
+                    if(data.output){
+                        res.send(data);
+                    }
+                    else{
+                        res.send({output:"give input"})
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+
+// tap.listen(8000) 
+
+server.listen(5000, () => {
+    console.log("Server Started on PORT: 3000");
+})
+
+
+
+
+
+
+
+
