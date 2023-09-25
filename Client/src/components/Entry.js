@@ -51,6 +51,13 @@ const Entry = () => {
             <p className='hel'>IF You Want to create Room &nbsp; <a onClick={CreateRoom} href="_">Create Room ID</a> </p>
           </div>
         </div>
+        {/* Company Name © DeepAI 2021 */}
+        <footer>
+                <h4 className='y'>
+                  Naman &nbsp;&&nbsp; Pradyumn © CodeSyncronix 2023
+                </h4>
+            </footer>
+        
       </div>
 
     </>
