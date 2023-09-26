@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { socketIo } from "./socket";
 import toast from 'react-hot-toast'
 import { GrCopy } from "react-icons/gr";
+import './Collaborate.css';
 
 
 
