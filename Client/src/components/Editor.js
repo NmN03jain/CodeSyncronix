@@ -68,13 +68,13 @@ const Editor = ({ socketref, roomId, onCode }) => {
 
     const options = () => {
         var option = document.getElementById("option")
-        if (option.value == "Java") {
+        if (option.value === "Java") {
             editorRef.current.setOption("mode", "text/x-java")
         }
-        else if (option.value == "Python") {
+        else if (option.value === "Python") {
             editorRef.current.setOption("mode", "python")
         }
-        else if (option.value = "Cpp") {
+        else if (option.value === "Cpp") {
             editorRef.current.setOption("mode", "ext/x-c++src")
 
         }

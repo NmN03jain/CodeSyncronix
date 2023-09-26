@@ -113,7 +113,7 @@ app.post("/Collaborate", (req, res) => {
         }
         else if (lang == "Java") {
             if (!input) {
-                var envData = { OS: "windows" };
+                var envData = { OS: "windows" ,options: { timeout: 10000 } };
                 compiler.compileJava(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
@@ -124,7 +124,7 @@ app.post("/Collaborate", (req, res) => {
                 });
             }
             else {
-                var envData = { OS: "windows" };
+                var envData = { OS: "windows",options: { timeout: 10000 } };
                 compiler.compileJavaWithInput(envData, code, input, function (data) {
                     if (data.output) {
                         res.send(data);

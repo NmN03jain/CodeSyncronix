@@ -4,10 +4,10 @@ body{
     /* padding: 0px; */
     /* margin-left: 10px; */
     /* padding-left: 10px; */
-    background-image: url(../../public/mai.jpg);
+    /* background-image: url(../../public/mai.jpg);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; */
 }
 *{
     margin: 0px;
@@ -167,6 +167,8 @@ span{
     font-weight: bold;
     text-align: center;
     border: none;
+    
+   
 }
 
 .choose{
