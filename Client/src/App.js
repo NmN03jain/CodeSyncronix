@@ -3,6 +3,7 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Entry from "./components/Entry";
 import Collaborate from './components/Collaborate';
 import './components/Collaborate.css';
+import './components/Entry.css';
 import { Toaster } from 'react-hot-toast';
 
 
@@ -13,8 +14,7 @@ function App() {
   return (
     <>
       <div>
-        <Toaster position='top-right'
-       >
+        <Toaster position='top-right'>
         </Toaster>
       </div>
       <BrowserRouter>

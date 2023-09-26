@@ -66,16 +66,16 @@ const Editor = ({ socketref, roomId, onCode }) => {
     }, [socketref.current])
 
 
-    const options = ()=>{
+    const options = () => {
         var option = document.getElementById("option")
-        if(option.value=="Java"){ 
-            editorRef.current.setOption("mode","text/x-java")
+        if (option.value === "Java") {
+            editorRef.current.setOption("mode", "text/x-java")
         }
-        else if(option.value=="Python"){
-            editorRef.current.setOption("mode","python")
+        else if (option.value === "Python") {
+            editorRef.current.setOption("mode", "python")
         }
-        else if (option.value = "Cpp"){
-            editorRef.current.setOption("mode","ext/x-c++src")
+        else if (option.value === "Cpp") {
+            editorRef.current.setOption("mode", "ext/x-c++src")
 
         }
     }
@@ -94,7 +94,7 @@ const Editor = ({ socketref, roomId, onCode }) => {
 
 
     const getData = async () => {
-        var option = document.getElementById("option") 
+        var option = document.getElementById("option")
         var code = {
             code: editorRef.current.getValue(),
             input: document.getElementById('inpu').value,
@@ -102,8 +102,15 @@ const Editor = ({ socketref, roomId, onCode }) => {
         }
         const resp = await axios.post("http://localhost:5000/Collaborate", code, axiosConfig)
         setOutputData(resp.data)
-        console.log(resp.data.output)  
+        console.log(resp.data.output)
     }
+    
+    useEffect(()=>{
+         axios.get("http://localhost:5000")
+    })
+    
+    
+    
 
 
 
@@ -115,18 +122,22 @@ const Editor = ({ socketref, roomId, onCode }) => {
                 </div>
 
                 <div className='feilds'>
+                    {/* <button onClick={domer}>delete</button> */}
 
-                    <div  className='run'>
+                    <div className='run'>
                         <div onClick={getData} className='runbut' > <FaPlay /></div>
-                         
-                        <div>
-                            <select onClick={options} id='option'> 
-                                <option selected>Choose...</option>
-                                <option value="Python">Python</option>
-                                <option value="Java">Java</option>
-                                <option value="Cpp">Cpp</option>
+ 
+                        <div > 
+                            <select onClick={options} id='option' className='choose' > 
+                                <option className='op' selected>Choose...</option>
+                                <option className='op' value="Python">Python</option>
+                                <option className='op' value="Java">Java</option>
+                                <option className='op' value="Cpp">Cpp</option>
                             </select>
                         </div>
+
+
+
                     </div>
 
                     <div className='input'>
@@ -141,7 +152,7 @@ const Editor = ({ socketref, roomId, onCode }) => {
                 </div>
             </div>
 
-        </>
+        </> 
     )
 
 

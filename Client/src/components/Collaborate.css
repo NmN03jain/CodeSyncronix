@@ -2,7 +2,12 @@
 body{
     margin: 0px;
     /* padding: 0px; */
-    margin-left: 10px;
+    /* margin-left: 10px; */
+    /* padding-left: 10px; */
+    /* background-image: url(../../public/mai.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
 }
 *{
     margin: 0px;
@@ -45,7 +50,10 @@ p{
 .LeftSide{
     display: flex;
     flex-direction: column;
-    /* background-color: #ddd; */
+    background-image: url(../../public/mai2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .LeftSideInner{
     flex: 1;
@@ -105,8 +113,14 @@ span{
 
 .feilds{
     color: wheat;
-    background-color: rgb(0, 0, 0);
     padding: 20px;
+    background-image: url(../../public/mai2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+
+
 }
 .output{
     margin-top: 100px;
@@ -128,19 +142,62 @@ span{
     gap:50px;
     color: #b86c6c;
     font-size: 25px;
-    /* border:1px solid white; */
     width: 25px;
     cursor: pointer;
-    /* background-color: rgb(15, 15, 15); */
+
+    
 
 }
+.runbut{
+  background-color: #007bff; /* Change the button color */
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
 .runbut:hover{
-    color: rgb(51, 59, 66);
+    color: rgb(20, 21, 21);
 }
 .out{
     height: 150px;
     border-radius: 10px;
     font-weight: bold;
     text-align: center;
+    border: none;
+    
+   
 }
 
+.choose{
+  background: #5E5DF0;
+  border-radius: 999px;
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+
+    
+}
+.op{
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+    font-weight: 700;
+    
+}
