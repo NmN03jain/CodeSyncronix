@@ -14,10 +14,18 @@ const server = http.createServer(app);
 
 const { Server } = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 
 const io = new Server(server);
 app.use(cors())
+
+app.use(express.static('../client/build'))
+app.use((req,res,next)=>{
+    res.sendFile(path.join(__dirname,'../client/build','index.html'))
+})
+
 const listOfUser = {};
+
 
 function allUsers(roomId) {
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
@@ -175,7 +183,7 @@ app.post("/Collaborate", (req, res) => {
 // tap.listen(8000) 
 
 server.listen(5000, () => {
-    console.log("Server Started on PORT: 3000");
+    console.log("Server Started on PORT: 5000");
 })
 
 
