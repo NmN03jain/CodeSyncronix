@@ -9,11 +9,18 @@ import 'codemirror/mode/clike/clike'
 
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/theme/cobalt.css';
+import 'codemirror/theme/cobalt.css'
 import 'codemirror/theme/midnight.css';
 import 'codemirror/theme/panda-syntax.css';
+import 'codemirror/theme/ayu-dark.css';
+import 'codemirror/theme/ambiance.css';
+import 'codemirror/theme/material-darker.css';
+import 'codemirror/theme/shadowfox.css';
+
+
 import { FaPlay } from "react-icons/fa";
 import axios from "axios";
+
 
 
 const Editor = ({ socketref, roomId, onCode }) => {
@@ -26,9 +33,9 @@ const Editor = ({ socketref, roomId, onCode }) => {
                 document.getElementById('realtimeEditor'),
                 {
                     mode: { name: 'python', json: true },
-                    theme: 'panda-syntax',
+                    theme: 'ambiance',
                     autoCloseTags: true,
-                    autoCloseBrackets: true,
+                    autoCloseBrackets: true,    
                     lineNumbers: true,
                 }
             );
@@ -74,10 +81,10 @@ const Editor = ({ socketref, roomId, onCode }) => {
         else if (option.value === "Python") {
             editorRef.current.setOption("mode", "python")
         }
-        else if (option.value === "Cpp") {
+        else if (option.value === "Cpp" || option.value === "C") {
             editorRef.current.setOption("mode", "ext/x-c++src")
-
         }
+
     }
 
 
@@ -88,9 +95,7 @@ const Editor = ({ socketref, roomId, onCode }) => {
             'Content-Type': 'application/json',
         },
     };
-    // var input = document.getElementById("inpu")
-    // var edito = document.getElementById("realtimeEditor")
-    var code;
+ 
 
 
     const getData = async () => {
@@ -101,16 +106,16 @@ const Editor = ({ socketref, roomId, onCode }) => {
             lang: option.value
         }
         const resp = await axios.post("http://localhost:5000/Collaborate", code, axiosConfig)
-        setOutputData(resp.data)
-        console.log(resp.data.output)
+        setOutputData(resp.data.output)
+        console.log("wh", resp.data.output) 
     }
-    
-    useEffect(()=>{
-         axios.get("http://localhost:5000")
-    })
-    
-    
-    
+
+    // useEffect(()=>{
+    //      axios.get("http://localhost:5000")
+    // },[])  
+
+
+
 
 
 
@@ -118,45 +123,38 @@ const Editor = ({ socketref, roomId, onCode }) => {
         <>
             <div className='Edit'>
                 <div className='editor'>
-                    <textarea id="realtimeEditor"> </textarea>
+                    <textarea id="realtimeEditor"></textarea>
                 </div>
 
                 <div className='feilds'>
-                    {/* <button onClick={domer}>delete</button> */}
+
 
                     <div className='run'>
-                        <div onClick={getData} className='runbut' > <FaPlay /></div>
- 
-                        <div > 
-                            <select onClick={options} id='option' className='choose' > 
-                                <option className='op' selected>Choose...</option>
-                                <option className='op' value="Python">Python</option>
+                        <div >
+                            <select onClick={options} id='option' className='choose' > languauge
+                            <option className='op' value="Python">Python</option>
                                 <option className='op' value="Java">Java</option>
                                 <option className='op' value="Cpp">Cpp</option>
+                                <option className='op' value="C">C</option>
                             </select>
                         </div>
-
-
-
                     </div>
 
                     <div className='input'>
                         <label>Input</label>
                         <textarea id='inpu' className='same' cols="30" rows="10"></textarea>
                     </div>
+                    <div onClick={getData} className='runbut' > <FaPlay /></div>
                     <div className='output'>
                         <label>Output </label>
-                        {/* <textarea id='outp' className='same' cols="30" rows="10">{outputData}</textarea> */}
-                        <input className='out' value={outputData.output} />
+                        {/* <input className='out' value={outputData} /> */}
+                        {/* <input type="text" id="codeInput" value={outputData} className="code-input out" placeholder="Enter code..."></input> */}
+                        <textarea value={outputData} className="code-input out" > </textarea>
                     </div>
                 </div>
             </div>
-
-        </> 
+        </>
     )
-
-
-
-
 }
 export default Editor;
+

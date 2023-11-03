@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
+
 const Entry = () => {
   const navigate = useNavigate();
   const [roomId, setRoomId] = useState('');
@@ -14,7 +15,7 @@ const Entry = () => {
 
   const CreateRoom = (e) => {
     e.preventDefault();
-    const id = v4();
+    const id = v4(); 
     setRoomId(id);
     toast.success("New Room Created ")
   }
@@ -57,11 +58,12 @@ const Entry = () => {
 
   return (
     <>
-
-      <div class="wrapper">
-        <div id="stars"></div>
+ 
+      <div  class="wrapper"> 
+           
+      <div id="stars" ></div>
         <div className="Home">
-
+      
           <form class="Form">
             <div className='inside-form'>
               <h1 className='heading'>CodeSyncronix</h1>
@@ -80,9 +82,8 @@ const Entry = () => {
 
           <div id="footer">
             <br />
-            <span>NAMAN AND PRADYUM CODESYNCRONIX @2023</span>
-          </div>
-
+            {/* <span>NAMAN AND PRADYUM CODESYNCRONIX @2023</span> */}
+          </div> 
         </div>
       </div>
 
