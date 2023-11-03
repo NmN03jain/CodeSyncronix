@@ -76,9 +76,13 @@ const Collaborate = (props) => {
     const copyId = () => {
         navigator.clipboard.writeText(location.state.roomId)
         toast.success("Room ID copied ")
-    }
+    }   
     const LeaveRoom = () => {
-        navigate('/');
+        const result = window.confirm("Do you want to proceed?");
+
+        if (result) {
+          navigate('/');
+        } 
     }
 
 
@@ -89,22 +93,33 @@ const Collaborate = (props) => {
 
                     <div className="LeftSideInner">
                         <div className="Logo">
-                            <a className="copy" onClick={copyId}> <GrCopy /></a>
+                            
                             <h2 className='heading'>Code-Syncronix</h2>
                         </div>
 
                         <h4 > Connected Users </h4>
-                        <div className="Members">
-                            {
-                                members.map((member) => (
-                                    <Member key={member.socketId} username={member.username} />
-                                ))
-                            }
-                        </div>
+
+                        {/* <select> */}
+                            <div className="Members">
+                                {
+                                    members.map((member) => (
+                                        <Member key={member.socketId} username={member.username} />
+                                        // <option>{member.username}</option>
+                                    ))
+
+                                }
+                            </div>
+
+                        {/* </select> */}
 
                     </div>
+                    <div className='copy-leave'>
+                  <button className='glow-on-hover bt leave 'onClick={copyId}  >Copy Room Id</button>
+                  <button className='glow-on-hover bt leave ' onClick={LeaveRoom} >Leave Room</button>
+                </div>
 
-                    <button className="bt leave" onClick={LeaveRoom}>Leave Room</button>
+
+
                 </div>
 
                 <div className="rightSide">

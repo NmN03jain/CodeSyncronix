@@ -8,6 +8,7 @@ body{
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover; */
+    /* color: red; */
 }
 *{
     margin: 0px;
@@ -50,7 +51,7 @@ p{
 .LeftSide{
     display: flex;
     flex-direction: column;
-    background-image: url(../../public/mai2.jpg);
+    background-image: url(../../public/mai.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -87,20 +88,27 @@ span{
     margin-bottom:5px;
 }
 .copy{
+    
     cursor: pointer;
     border-bottom: none;
     margin-left: 80%;
     font-size: 30px;
+    /* color: wheat; */
     /* color: red; */
-    /* background-color: aqua; */
+    /* background-color: rgb(255, 255, 255); */
+    /* padding-top: 100px; */
 }
 
 .CodeMirror{
     /* min-height: calc(100vh - 20px); */
     min-height: 100vh;
+    /* height: 100%; */
+
     font-size: 20px;
+    font-weight: bold;
     /* line-height: 1.6px; */
-    /* padding-top: 20px;/ */
+    /* padding-top: 20px; */
+    
 }
 .Edit{
     display: flex;
@@ -112,23 +120,24 @@ span{
 }
 
 .feilds{
+ 
     color: wheat;
     padding: 20px;
-    background-image: url(../../public/mai2.jpg);
+    background-image: url(../../public/mai.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    
-
 
 }
 .output{
-    margin-top: 100px;
+    margin-top: 2rem;
     display: flex ;
     flex-direction: column;
+    color:  white;
 }
 .input{
-    margin-top: 50px;
+    margin-top: 3rem;
+    color: white;
     
 }
 .same{
@@ -136,7 +145,16 @@ span{
     font-weight: bold;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-align: center;
+
+    /* width: 10em; */
+
+    background-color: rgb(0, 0, 0);
+    font-family:Arial, Helvetica, sans-serif;
+    padding: 5px; /* Add some padding to make it visually clear */
+    border: 1px solid #ccc; /* Optional: Add a border for clarity */
+    color: white;
 }
+
 .run{
     display: flex;
     gap:50px;
@@ -149,7 +167,7 @@ span{
 
 }
 .runbut{
-  background-color: #007bff; /* Change the button color */
+  background-color: #000000; /* Change the button color */
   color: #fff;
   border: none;
   padding: 10px;
@@ -157,24 +175,35 @@ span{
   border-radius: 4px;
   font-size: 16px;
   transition: background-color 0.3s;
+  width: 15px;
+  height: 15px;
+  margin-top: 20px;
+
 }
 .runbut:hover{
-    color: rgb(20, 21, 21);
+    color: rgb(0, 245, 245);
 }
 .out{
-    height: 150px;
+    height: 10rem;
     border-radius: 10px;
     font-weight: bold;
     text-align: center;
     border: none;
-    
+    background: black;
+    color: wheat;
    
 }
 
+.code-input {
+    font-family: 'Courier New', monospace; /* Use a monospace font for code appearance */
+    padding: 5px; /* Add some padding to make it visually clear */
+    border: 1px solid #ccc; /* Optional: Add a border for clarity */
+  }
+
 .choose{
-  background: #5E5DF0;
-  border-radius: 999px;
-  box-shadow: #5E5DF0 0 10px 20px -10px;
+  background: #1d1d20;
+  border-radius: 8px;
+  box-shadow: #8989ba 0 10px 20px -10px;
   box-sizing: border-box;
   color: #FFFFFF;
   cursor: pointer;
@@ -200,4 +229,42 @@ span{
     font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
     font-weight: 700;
     
+}
+.Logo{
+    /* color: wheat; */
+padding-left: 10px;
+padding-top: 10px;
+padding-right: 10px;
+}
+.copy{
+    background-color: #dce5dd;
+    
+}
+@media only screen and (max-width: 1000px) {
+    .feilds{
+        width: 100px;
+    }
+    .same{
+        width: 100px;
+    }
+    .choose{
+        width: 10px;
+        position: relative;
+        right: 20px;
+    }
+    .CodeMirror{
+        height: 100%;
+    }
+    .LeftSide{
+        margin-right: 100px;
+    }
+    .rightSide{
+        margin-left: -100px;
+    }
+  }
+.copy-leave{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
 }

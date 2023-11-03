@@ -71,22 +71,22 @@ io.on('connection', (socket) => {
 
 })
 
-app.get("/",()=>{
-    compiler.flush(()=>{
+app.get("/", () => {
+    compiler.flush(() => {
         console.log("deleted");
-    }) 
-}) 
+    })
+})
 
 // compiler code 
 app.post("/Collaborate", (req, res) => {
     var code = req.body.code
     var input = req.body.input
     var lang = req.body.lang
-    console.log("hi")
+
 
     try {
         // res.send("hello bhai")
-        if (lang == "Cpp") {
+        if (lang == "Cpp" || lang == "C") {
             if (!input) {
                 var envData = { OS: "windows", cmd: "g++", options: { timeout: 10000 } };
                 compiler.compileCPP(envData, code, function (data) {
@@ -113,7 +113,7 @@ app.post("/Collaborate", (req, res) => {
         }
         else if (lang == "Java") {
             if (!input) {
-                var envData = { OS: "windows" ,options: { timeout: 10000 } };
+                var envData = { OS: "windows", options: { timeout: 10000 } };
                 compiler.compileJava(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
@@ -124,31 +124,36 @@ app.post("/Collaborate", (req, res) => {
                 });
             }
             else {
-                var envData = { OS: "windows",options: { timeout: 10000 } };
+                var envData = { OS: "windows", options: { timeout: 10000 } };
                 compiler.compileJavaWithInput(envData, code, input, function (data) {
-                    if (data.output) {
-                        res.send(data);
+                    if(input){
+                        if (data.output) {
+                            res.send(data);
+                        }
+                        else {
+                            res.send({ output: "give input" })
+                        }
                     }
-                    else {
-                        res.send({ output: "give input" })
+                    else{
+                        res.send({output:"give input"})
                     }
                 });
             }
         }
         else if (lang == "Python") {
             if (!input) {
-                var envData = { OS: "windows" , options: { timeout: 10000 } };
+                var envData = { OS: "windows", options: { timeout: 10000 } };
                 compiler.compilePython(envData, code, function (data) {
                     if (data.output) {
                         res.send(data);
                     }
                     else {
-                        res.send({ output: "Segmentation error" })
+                        res.send({ output: "Indentation Error" })
                     }
                 });
-            }
+            } 
             else {
-                var envData = { OS: "windows" , options: { timeout: 10000 } };
+                var envData = { OS: "windows", options: { timeout: 10000 } };
                 compiler.compilePythonWithInput(envData, code, input, function (data) {
                     if (data.output) {
                         res.send(data);
@@ -159,6 +164,7 @@ app.post("/Collaborate", (req, res) => {
                 });
             }
         }
+
     } catch (error) {
         console.log("shiit happend")
     }
