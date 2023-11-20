@@ -14,8 +14,13 @@
     "@uiw/codemirror-theme-vscode": "^4.21.13",
     "axios": "^1.5.0",
     "babel-plugin-macros": "^3.1.0",
+    "body-parser": "^1.20.2",
     "codemirror": "^5.65.11",
+    "compilex": "^0.7.4",
     "concurrently": "^8.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
     "react": "^18.2.0",
     "react-avatar": "^5.0.3",
     "react-copy-to-clipboard": "^5.1.0",
@@ -24,6 +29,7 @@
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
+    "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
@@ -33,9 +39,9 @@
     "start": "npm run build && npm run server:prod",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "server:prod" : "node ../Server/server.js",
+    "server:prod": "node server.js",
     "eject": "react-scripts eject",
-    "both": "concurrently \"npm run start\"  \"nodemon ../Server/server.js\" "
+    "both": "concurrently \"npm run start:front\"  \"nodemon server.js\" "
   },
   "eslintConfig": {
     "extends": [
