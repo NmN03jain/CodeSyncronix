@@ -19,10 +19,10 @@ const path = require('path');
 const io = new Server(server);
 app.use(cors())
 
-// app.use(express.static('../client/build'))
-// app.use((req,res,next)=>{
-//     res.sendFile(path.join(__dirname,'../client/build','index.html'))
-// })f
+app.use(express.static('../client/build'))
+app.use((req,res,next)=>{
+    res.sendFile(path.join(__dirname,'../client/build','index.html'))
+})
 
 const listOfUser = {};
 
