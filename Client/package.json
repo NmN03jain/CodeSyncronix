@@ -29,13 +29,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:front": "react-scripts start",
     "start": "npm run build && npm run server:prod",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "server:prod" : "node ../Server/server.js",
     "eject": "react-scripts eject",
-    "both": "concurrently \"npm run start\"  \"nodemon ../Server/server.js\" "
   },
   "eslintConfig": {
     "extends": [
