@@ -8,7 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 
 
-function App() {
+function App() { 
   return (
     <>
       <div>
@@ -20,7 +20,7 @@ function App() {
             <Route path='/' element={<Entry/>} />
             <Route path='/Collaborate/:roomID' element={<Collaborate/>}  />
 
-        </Routes>
+        </Routes> 
       </BrowserRouter>
 
     </>

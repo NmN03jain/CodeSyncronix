@@ -94,7 +94,8 @@ const Collaborate = (props) => {
                     <div className="LeftSideInner">
                         <div className="Logo">
                             
-                            <h2 className='heading'>Code-Syncronix</h2>
+                            {/* <h2 className='heading'>Code-Syncronix</h2> */}
+                            <h2 className='heading'>Collaboration</h2>
                         </div>
 
                         <h4 > Connected Users </h4>

@@ -5,8 +5,6 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/python/python'
 import 'codemirror/mode/clike/clike'
-
-
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/theme/cobalt.css'
@@ -22,9 +20,7 @@ import { FaPlay } from "react-icons/fa";
 import axios from "axios";
 
 
-
 const Editor = ({ socketref, roomId, onCode }) => {
-
     const [outputData, setOutputData] = useState("")
     const editorRef = useRef(null);
     useEffect(() => {
@@ -39,7 +35,7 @@ const Editor = ({ socketref, roomId, onCode }) => {
                     lineNumbers: true,
                 }
             );
-
+            
             editorRef.current.on('change', (instance, changes) => {
                 console.log(changes)
                 const { origin } = changes;
@@ -103,9 +99,9 @@ const Editor = ({ socketref, roomId, onCode }) => {
         var code = {
             code: editorRef.current.getValue(),
             input: document.getElementById('inpu').value,
-            lang: option.value
+            lang: option.value 
         }
-        const resp = await axios.post("http://localhost:5000/Collaborate", code, axiosConfig)
+        const resp = await axios.post("http://localhost:5001/Collaborate", code, axiosConfig)
         setOutputData(resp.data.output)
         console.log("wh", resp.data.output) 
     }
@@ -113,11 +109,6 @@ const Editor = ({ socketref, roomId, onCode }) => {
     // useEffect(()=>{
     //      axios.get("http://localhost:5000")
     // },[])  
-
-
-
-
-
 
     return (
         <>
@@ -152,9 +143,9 @@ const Editor = ({ socketref, roomId, onCode }) => {
                         <textarea value={outputData} className="code-input out" > </textarea>
                     </div>
                 </div>
-            </div>
+            </div> 
         </>
     )
 }
-export default Editor;
 
+export default Editor;

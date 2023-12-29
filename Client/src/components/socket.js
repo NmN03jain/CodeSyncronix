@@ -8,5 +8,5 @@ export const socketIo = async () =>{
         timeout:10000,
         transports:['websocket'],
     }
-    return io("http://localhost:5000",option)
+    return io("http://localhost:5001",option)
 }

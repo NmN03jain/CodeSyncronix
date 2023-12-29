@@ -9,6 +9,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover; */
     /* color: red; */
+    background-image: url(../../public/bi.png);
 }
 *{
     margin: 0px;
@@ -51,7 +52,7 @@ p{
 .LeftSide{
     display: flex;
     flex-direction: column;
-    background-image: url(../../public/mai.jpg);
+    /* background-image: url(../../public/bi.png); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -123,7 +124,7 @@ span{
  
     color: wheat;
     padding: 20px;
-    background-image: url(../../public/mai.jpg);
+    /* background-image: url(../../public/mai.jpg); */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

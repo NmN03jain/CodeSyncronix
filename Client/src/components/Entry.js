@@ -66,7 +66,8 @@ const Entry = () => {
       
           <form class="Form">
             <div className='inside-form'>
-              <h1 className='heading'>CodeSyncronix</h1>
+              {/* <h1 className='heading'>CodeSyncronix</h1> */}
+              <h1 className='heading'>Collaboration</h1>
               <div className='inputs'>
                 <input className='inputfield' type='text' placeholder='USER-NAME' value={userName} onChange={(e) => { setUserName(e.target.value) }} onKeyUp={ForEnter} /> 
 
